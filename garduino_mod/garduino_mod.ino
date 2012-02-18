@@ -3,8 +3,8 @@
 
  This is a modification of the original "Garduino" project. 
  It reads the data from the sensors attached to the plants and sends
- them back to our server, where they are saved and processed,
- using an Arduino Wiznet Ethernet shield.
+ them back to our server, where they are saved and processed.
+ It is using an Arduino Wiznet Ethernet shield.
  
  This work is based on the "Garduino" project made
  originally by Luke Iseman and published in MAKE magazine:
@@ -49,7 +49,7 @@ const int try_sent_max = 5;           //maximum number of tries we will use to t
 //stuff for connections
 byte mac[] = {  0x00, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };  //mac address for the ethernet shield
 IPAddress ip(10,0,1,39);                               //fallback ip address to use, when dhcp fails
-char serverName[] = "inka.rstack.cc";                  //address of the server we will send data to
+char serverName[] = "www.example.com";                  //address of the server we will send data to
 EthernetClient client;       
 
 void setup() {
@@ -126,7 +126,7 @@ void loop () {
     if(client.connect(serverName, 80)) { 
         //if connection is made successfully, send the data
         Serial.println("making HTTP request...");
-        client.print("GET /receive.php?moist1=");
+        client.print("GET /receive_data.php?moist1=");
         client.print(moisture_val_1);
         client.print("&moist2=");
         client.print(moisture_val_2);
@@ -136,8 +136,8 @@ void loop () {
         client.print(temp);
         client.println(" HTTP/1.1");
       
-        client.println("HOST: inka.rstack.cc");
-        client.println("Authorization: Basic aW5rYTpkdXBhLjEyMw=="); //basic auth for our server
+        client.println("HOST: www.example.com");
+        client.println("Authorization: Basic XXXXXXXXXXX"); //basic auth for our server
         client.println(); //end headers
        
         data_sent = 0; //reset the counter - connection made sucessfully
